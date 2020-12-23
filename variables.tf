@@ -99,7 +99,7 @@ variable "database_max_capacity" {
 }
 
 variable "database_auto_pause" {
-  type        = boolean
+  type        = bool
   default     = true
   description = "Pause Aurora Serverless after a given amount of time with no activity. https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.how-it-works.html#aurora-serverless.how-it-works.pause-resume"
 }
