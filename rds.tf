@@ -76,10 +76,10 @@ resource "aws_rds_cluster" "backend_store" {
   backup_retention_period   = 14
 
   scaling_configuration {
-    auto_pause               = true
     max_capacity             = var.database_max_capacity
     min_capacity             = var.database_min_capacity
-    seconds_until_auto_pause = 300
+    auto_pause               = var.database_auto_pause
+    seconds_until_auto_pause = var.database_seconds_until_auto_pause
     timeout_action           = "ForceApplyCapacityChange"
   }
 }
