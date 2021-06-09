@@ -9,5 +9,6 @@ locals {
     },
     var.tags
   )
+
 }
 

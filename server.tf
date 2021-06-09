@@ -139,7 +139,7 @@ resource "aws_ecs_service" "mlflow" {
   }
 
   depends_on = [
-    aws_lb.mlflow,
+    aws_lb_listener.mlflow,
   ]
 }
 
@@ -210,3 +210,15 @@ resource "aws_lb_target_group" "mlflow" {
   }
 }
 
+resource "aws_lb_listener" "mlflow" {
+  load_balancer_arn = aws_lb.mlflow.arn
+  port              = var.load_balancer_certificate_arn == null ? "80" : "443"
+  protocol          = var.load_balancer_certificate_arn == null ? "HTTP" : "HTTPS"
+  ssl_policy        = var.load_balancer_certificate_arn == null ? null : var.load_balancer_ssl_policy
+  certificate_arn   = var.load_balancer_certificate_arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.mlflow.arn
+  }
+}

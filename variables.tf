@@ -30,6 +30,18 @@ variable "load_balancer_is_internal" {
   description = "By default, the load balancer is internal. This is because as of v1.9.1, MLflow doesn't have native authentication or authorization. We recommend exposing MLflow behind a VPN or using OIDC/Cognito together with the LB listener."
 }
 
+variable "load_balancer_ssl_policy" {
+  type        = string
+  default     = "ELBSecurityPolicy-2016-08"
+  description = "Only used if load_balancer_certificate_arn is supplied."
+}
+
+variable "load_balancer_certificate_arn" {
+  type        = string
+  default     = null
+  description = ""
+}
+
 variable "service_subnet_ids" {
   type        = list(string)
   description = "List of subnets where the MLflow ECS service will be deployed (the recommendation is to use subnets that cannot be accessed directly from the Internet)"
