@@ -8,18 +8,21 @@ import (
 	"github.com/gruntwork-io/terratest/modules/aws"
 	http_helper "github.com/gruntwork-io/terratest/modules/http-helper"
 	"github.com/gruntwork-io/terratest/modules/terraform"
+	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
 func TestPublicDeployment(t *testing.T) {
 	t.Parallel()
 
-	terraformOptions := &terraform.Options{
-		TerraformDir: "../examples",
+	terraformDir := test_structure.CopyTerraformFolderToTemp(t, "../..", "terratest/examples")
+
+	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: terraformDir,
 		Vars: map[string]interface{}{
 			"is_private": false,
 		},
 		NoColor: true,
-	}
+	})
 
 	defer terraform.Destroy(t, terraformOptions)
 
@@ -44,14 +47,16 @@ func TestPublicDeployment(t *testing.T) {
 func TestPrivateDeploymentWithCustomBucket(t *testing.T) {
 	t.Parallel()
 
-	terraformOptions := &terraform.Options{
-		TerraformDir: "../examples",
+	terraformDir := test_structure.CopyTerraformFolderToTemp(t, "../..", "terratest/examples")
+
+	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: terraformDir,
 		Vars: map[string]interface{}{
 			"is_private":         true,
 			"artifact_bucket_id": "my-bucket",
 		},
 		NoColor: true,
-	}
+	})
 
 	defer terraform.Destroy(t, terraformOptions)
 

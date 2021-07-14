@@ -16,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Setup Go 1.13.x
+    - name: Setup Go 1.14.x
       uses: actions/setup-go@v1
       with:
-        go-version: '1.13.5'
+        go-version: '1.14.5'
     - name: Run tests
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_INFRA_TEST_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_INFRA_TEST_SECRET_ACCESS_KEY }}
       run: |
-        cd terratest/test && go test -v -timeout 35m mlflow_test.go
+        cd terratest/test && go test -v -timeout 35m
