@@ -1,6 +1,14 @@
+terraform {
+  required_providers {
+    aws = {
+      version = "~> 3.15"
+      source  = "hashicorp/aws"
+    }
+  }
+}
+
 provider "aws" {
-  region  = "eu-west-1"
-  version = "~> 2.28"
+  region = "eu-west-1"
 }
 
 resource "random_id" "id" {
@@ -18,7 +26,7 @@ resource "aws_secretsmanager_secret_version" "db_password" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "2.44.0"
+  version = "3.2.0"
 
   name               = "mlflow-${random_id.id.hex}"
   cidr               = "10.0.0.0/16"
