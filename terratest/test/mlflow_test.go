@@ -133,7 +133,7 @@ func TestPrivateDeploymentWithCustomBucket(t *testing.T) {
 		awsRegion,
 		networkingTerraformOptions,
 		map[string]interface{}{
-			"random_id":  randomId,
+			"random_id":          randomId,
 			"is_private":         true,
 			"artifact_bucket_id": "my-bucket",
 		},
