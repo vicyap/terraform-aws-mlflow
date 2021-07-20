@@ -89,7 +89,6 @@ func TestPublicDeploymentEuWest1(t *testing.T) {
 			"is_private": false,
 		},
 	)
-
 	defer terraform.Destroy(t, mlflowTerraformOptions)
 
 	assertMlflowPublicDeployment(t, mlflowTerraformOptions, awsRegion)
@@ -113,7 +112,6 @@ func TestPublicDeploymentUsWest2(t *testing.T) {
 			"is_private": false,
 		},
 	)
-
 	defer terraform.Destroy(t, mlflowTerraformOptions)
 
 	assertMlflowPublicDeployment(t, mlflowTerraformOptions, awsRegion)
@@ -138,7 +136,6 @@ func TestPrivateDeploymentWithCustomBucket(t *testing.T) {
 			"artifact_bucket_id": "my-bucket",
 		},
 	)
-
 	defer terraform.Destroy(t, mlflowTerraformOptions)
 
 	// Getting outputs
@@ -157,4 +154,29 @@ func TestPrivateDeploymentWithCustomBucket(t *testing.T) {
 	if err == nil {
 		t.Error("Expected load balancer not to be reachable from the Internet")
 	}
+}
+
+func TestCustomServerImage(t *testing.T) {
+	t.Parallel()
+
+	randomId := strings.ToLower(random.UniqueId())
+	awsRegion := "us-west-2"
+
+	networkingTerraformOptions := setupNetworking(t, awsRegion, randomId)
+	defer terraform.Destroy(t, networkingTerraformOptions)
+
+	mlflowTerraformOptions := setupMlflow(
+		t,
+		awsRegion,
+		networkingTerraformOptions,
+		map[string]interface{}{
+			"random_id":         randomId,
+			"is_private":        false,
+			"service_image":     "vicyap/mlflow",
+			"service_image_tag": "1.19.0",
+		},
+	)
+	defer terraform.Destroy(t, mlflowTerraformOptions)
+
+	assertMlflowPublicDeployment(t, mlflowTerraformOptions, awsRegion)
 }
