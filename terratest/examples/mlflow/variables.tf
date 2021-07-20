@@ -10,6 +10,14 @@ variable "artifact_bucket_id" {
   default = null
 }
 
+variable "service_image" {
+  default = "larribas/mlflow"
+}
+
+variable "service_image_tag" {
+  default = "1.9.1"
+}
+
 ## begin networking variables
 
 variable "vpc_id" {

@@ -1,3 +1,7 @@
+locals {
+
+}
+
 resource "aws_secretsmanager_secret" "db_password" {
   name_prefix = "mlflow-terratest"
 }
@@ -23,6 +27,9 @@ module "mlflow" {
   artifact_bucket_id                = var.artifact_bucket_id
   database_password_secret_arn      = aws_secretsmanager_secret_version.db_password.secret_id
   database_skip_final_snapshot      = true
+
+  service_image     = var.service_image
+  service_image_tag = var.service_image_tag
 }
 
 resource "aws_lb_listener" "http" {
