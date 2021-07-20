@@ -1,7 +1,3 @@
-locals {
-
-}
-
 resource "aws_secretsmanager_secret" "db_password" {
   name_prefix = "mlflow-terratest"
 }
